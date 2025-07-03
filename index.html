@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Consultas - Veterinaria</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="laboratorio.css">
+  <link rel="stylesheet" href="consentimientos.css">
+  <link rel="icon" href="empresa.jpg" type="image/x-icon">
+</head>
+<body>
+  <!-- Botón menú hamburguesa solo para visitas -->
+<button id="menuToggle" class="menu-toggle" title="Mostrar/Ocultar menú" style="display:none;">
+  <i class="fas fa-bars"></i>
+</button>
+  <!-- Botón para ocultar sidebar solo para visitas -->
+  <button id="menuToggleBtn" class="menu-toggle" style="display:none;">
+    <i class="fas fa-angle-double-left"></i> 
+  </button>
+  <div class="main-container">
+    <!-- Sidebar con navegación -->
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="empresa.jpg" alt="Logo Veterinaria">
+        <h1>Veterinaria San Martin de Porres</h1>
+      </div>
+      
+      <!-- Añadir información del usuario -->
+      <div class="user-info">
+        <div class="user-avatar">
+          <i class="fas fa-user-circle"></i>
+        </div>
+        <div class="user-details">
+          <p id="userName">Usuario</p>
+          <span id="userRole">Rol</span>  
+        </div>
+      </div>
+      
+      <nav>
+        <!-- Consultas -->
+        <div class="nav-category">
+          <button id="consultasBtn" class="nav-category-btn" onclick="toggleSubmenuHTML('consultasBtn', 'consultasSubmenu');">
+            <i class="fas fa-stethoscope"></i> Consultas
+            <i class="fas fa-chevron-down category-arrow"></i>
+          </button>
+          <div id="consultasSubmenu" class="nav-submenu">
+            <button id="crearTicketBtn" class="submenu-btn" onclick="navigateToSection('crearTicketSection', 'crearTicketBtn');">
+              <i class="fas fa-plus-circle"></i> Crear Consulta
+            </button>
+            <button id="verTicketsBtn" class="submenu-btn" onclick="navigateToConsultas();">
+              <i class="fas fa-list-alt"></i> Ver Consultas
+            </button>
+          </div>
+        </div>
+
+        <!-- Consentimientos -->
+        <div class="nav-category">
+          <button id="consentimientosBtn" class="nav-category-btn" onclick="toggleSubmenuHTML('consentimientosBtn', 'consentimientosSubmenu');">
+            <i class="fas fa-file-contract"></i> Consentimientos
+            <i class="fas fa-chevron-down category-arrow"></i>
+          </button>
+          <div id="consentimientosSubmenu" class="nav-submenu">
+            <button id="crearConsentimientoBtn" class="submenu-btn" onclick="navigateToSection('consentimientosSection', 'crearConsentimientoBtn');">
+              <i class="fas fa-file-plus"></i> Crear Consentimiento
+            </button>
+          </div>
+        </div>
+
+        <!-- Laboratorio -->
+        <div class="nav-category">
+          <button id="laboratorioBtn" class="nav-category-btn" onclick="toggleSubmenuHTML('laboratorioBtn', 'laboratorioSubmenu');">
+            <i class="fas fa-microscope"></i> Laboratorio
+            <i class="fas fa-chevron-down category-arrow"></i>
+          </button>
+          <div id="laboratorioSubmenu" class="nav-submenu">
+            <button id="crearLabBtn" class="submenu-btn" onclick="navigateToLab('crearLabSection', 'crearLabBtn');">
+              <i class="fas fa-vials"></i> Crear Ticket Lab
+            </button>
+            <button id="verLabBtn" class="submenu-btn" onclick="navigateToLab('verLabSection', 'verLabBtn');">
+              <i class="fas fa-microscope"></i> Ver Tickets Lab
+            </button>
+          </div>
+        </div>
+
+        <!-- Administrativo (solo para admin) -->
+        <div id="administrativoCategory" class="nav-category admin-only" style="display: none;">
+          <button id="administrativoBtn" class="nav-category-btn" onclick="toggleSubmenuHTML('administrativoBtn', 'administrativoSubmenu');">
+            <i class="fas fa-cogs"></i> Administrativo
+            <i class="fas fa-chevron-down category-arrow"></i>
+          </button>
+          <div id="administrativoSubmenu" class="nav-submenu">
+            <button id="horarioBtn" class="submenu-btn" onclick="navigateToSection('horarioSection', 'horarioBtn');">
+              <i class="fas fa-calendar-alt"></i> Horario
+            </button>
+            <button id="estadisticasBtn" class="submenu-btn" onclick="navigateToEstadisticas();">
+              <i class="fas fa-chart-pie"></i> Estadísticas
+            </button>
+          </div>
+        </div>
+      </nav>
+      
+      <!-- Añadir botón de cerrar sesión -->
+      <button id="logoutBtn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</button>
+
+      <!-- Botón solo para admin -->
+      <button id="adminUsersBtn" class="admin-btn" style="display:none; margin-top:10px;"><i class="fas fa-users-cog"></i> Administrar usuarios</button>
+      <div class="sidebar-footer">
+        <p>© 2025 Veterinaria SMP</p>
+      </div>
+    </aside>
+
+    <!-- Contenido principal -->
+    <div class="content" id="mainContent">
+      <!-- Sección para crear tickets -->
+      <section id="crearTicketSection" class="hidden">
+        <h2><i class="fas fa-paw"></i> Crear Consulta</h2>
+        <div class="form-container">
+          <form id="ticketForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="nombre">Nombre del Cliente</label>
+                <input type="text" id="nombre" required>
+              </div>
+              <div class="form-group">
+                <label for="cedula">Cédula</label>
+                <input type="text" id="cedula" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="mascota">Nombre de la Mascota</label>
+                <input type="text" id="mascota" required>
+              </div>
+              <div class="form-group">
+                <label for="tipoMascota">Tipo de Mascota</label>
+                <select id="tipoMascota" required>
+                  <option value="perro">Perro</option>
+                  <option value="gato">Gato</option>
+                  <option value="conejo">Conejo</option>
+                  <option value="otro">Otro</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="idPaciente">Número ID del paciente</label>
+                <input type="text" id="idPaciente" placeholder="ID del paciente" required>
+              </div>
+              <div class="form-group">
+                <label for="fecha">Fecha de Consulta</label>
+                <input type="date" id="fecha" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="hora">Hora de Consulta</label>
+                <input type="time" id="hora">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="doctorAtiende"><i class="fas fa-user-md"></i> Doctor que atiende</label>
+                <select id="doctorAtiende" name="doctorAtiende">
+                  <option value="">Seleccione un doctor</option>
+                  <option value="Dr. Luis Coto">Dr. Luis Coto</option>
+                  <option value="Dr. Randall Azofeifa">Dr. Randall Azofeifa</option>
+                  <option value="Dr. Gustavo Gonzalez">Dr. Gustavo Gonzalez</option>
+                  <option value="Dra. Daniela Sancho">Dra. Daniela Sancho</option>
+                  <option value="Dra. Francinny Nuñez">Dra. Francinny Nuñez</option>
+                  <option value="Dra. Kharen Moreno">Dra. Kharen Moreno</option>
+                  <option value="Dra. Karina Madrigal">Dra. Karina Madrigal</option>
+                  <option value="Dra. Lourdes Chacón">Dra. Lourdes Chacón</option>
+                  <option value="Dra. Sofia Carrillo">Dra. Sofia Carrillo</option>
+                  <option value="Dra. Karla Quesada">Dra. Karla Quesada</option>
+                  <option value="Dra. Natalia Alvarado">Dra. Natalia Alvarado</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="asistenteAtiende"><i class="fas fa-user-nurse"></i> Asistente que atiende</label>
+                <select id="asistenteAtiende" name="asistenteAtiende">
+                  <option value="">Seleccione un asistente</option>
+                  <option value="Tec. Maribel Guzmán">Tec. Maribel Guzmán</option>
+                  <option value="Tec. Juliana Perez">Tec. Juliana Perez</option>
+                  <option value="Tec. Jafeth Bermudez">Tec. Jafeth Bermudez</option>
+                  <option value="Tec. Johnny Chacón">Tec. Johnny Chacón</option>
+                  <option value="Tec. Gabriela Zuñiga">Tec. Gabriela Zuñiga</option>
+                  <option value="Tec. Indra Perez">Tec. Indra Perez</option>
+                  <option value="Tec. Randy Arias">Tec. Randy Arias</option>
+                  <option value="Tec. Yancy Picado">Tec. Yancy Picado</option>
+                  <option value="Tec. Maria Fernanda">Tec. Maria Fernanda</option>
+                  <option value="Tec. Maria José Gutierrez">Tec. Maria José Gutierrez</option>
+                  <option value="Tec. Jimena Urtecho">Tec. Jimena Urtecho</option>
+                  <option value="Tec. Nicole Gamboa">Tec. Nicole Gamboa</option>
+                  <option value="Tec. Paola López">Tec. Paola López</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="estado">Estado</label>
+                <select id="estado" required>
+                  <option value="espera">En Sala de Espera</option>
+                  <option value="consultorio1">Consultorio 1</option>
+                  <option value="consultorio2">Consultorio 2</option>
+                  <option value="consultorio3">Consultorio 3</option>
+                  <option value="consultorio4">Consultorio 4</option>
+                  <option value="consultorio5">Consultorio 5</option>
+                  <option value="rayosx">En Rayos X</option>
+                  <option value="quirofano">En Quirófano</option>
+                  <option value="terminado">Consulta Terminada</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="urgencia">Categorización de pacientes</label>
+                <select id="urgencia" required>
+                  <option value="consulta" selected>🔵 Consulta Regular</option>
+                  <option value="prequirurgico">🟣 Exámenes Pre Quirúrgicos</option>
+                  <option value="emergencia">🔴 Emergencias</option>
+                  <option value="urgencia">🟠 Urgencias</option>
+                  <option value="leve">🟢 Leve</option>
+                </select>
+                <div id="urgenciaDesc" style="font-size:0.95em;color:#1976d2;margin-top:4px;"></div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="tipoServicio">Tipo de Servicio</label>
+                <select id="tipoServicio" required>
+                  <option value="consulta">Consulta general</option>
+                  <option value="revaloracion">Revaloración</option>
+                  <option value="retiroHilos">Retiro de hilos</option>
+                  <option value="rayosX">Rayos X</option>
+                  <option value="desparasitacion">Desparasitación</option>
+                  <option value="inyectable">Inyectables</option>
+                  <option value="vacunas">Vacunas</option>
+                  <option value="consulta_8pm">Consulta después de las 8 P.M</option>
+                  <option value="consulta_6pm">Consulta después de las 6 P.M</option>
+                  <option value="hmg_limpieza">HMG Limpieza</option>
+                  <option value="hmg_castracion">HMG Castración</option>
+                  <option value="cambio_vendaje">Cambio de vendaje</option>
+                  <option value="convenia_cx">Convenia de CX</option>
+                  <option value="analito">Analito</option>
+                  <option value="panel_general_basico">Panel General Básico</option>
+                  <option value="panel_plus">Panel Plus</option>
+                  <option value="perfil_quimico_general">Perfil quimico general</option>
+                  <option value="perfil_pre_quirurgico">Perfil pre quirurgico</option>
+                  <option value="perfil_renal">Perfil renal</option>
+                  <option value="cirugia">Cirugía</option>
+                  <option value="muestra_test">Muestra para test</option>
+                  <option value="tiempos_coagulacion">Tiempos de coagulación</option>
+                  <option value="internamiento">Internamiento</option>
+                  <option value="test_sida_leucemia">Test de Sida Leucemia</option>
+                  <option value="test_distemper">Test de Distemper</option>
+                  <option value="test_parvovirus">Test Parvovirus</option>
+                  <option value="rx_control">RX de Control</option>
+                  <option value="corteUnas">Corte de uñas</option>
+                  <option value="emergencia">Emergencia</option>
+                  <option value="tomaMuestras">Toma de muestras</option>
+                  <option value="tests">Tests</option>
+                  <option value="hemograma">Hemograma</option>
+                  <option value="eutanasia">Eutanasia</option>
+                  <option value="quitarPuntos">Quitar puntos</option>
+                  <option value="otro">Otro</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="numFactura">Número de factura</label>
+                <input type="text" id="numFactura" placeholder="Número de factura">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="motivoLlegada">Motivo de Llegada</label>
+              <textarea id="motivoLlegada" placeholder="Describa el motivo de llegada" required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="motivo">Motivo de Consulta</label>
+              <textarea id="motivo" placeholder="Describa el motivo de la consulta"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="porCobrar">Por Cobrar</label>
+              <div style="background: #e3f2fd; border: 1px solid #2196f3; border-radius: 4px; padding: 6px; margin-bottom: 6px; font-size: 12px; color: #1976d2;">
+                <i class="fas fa-info-circle" style="margin-right: 4px;"></i>
+                Esta información se preservará y acumulará durante las ediciones del ticket.
+              </div>
+              <textarea id="porCobrar" 
+                placeholder="Introduzca información sobre cobros, procedimientos adicionales, medicamentos, etc." 
+                style="width: 100%; 
+                       min-height: 120px; 
+                       resize: vertical; 
+                       font-size: 14px; 
+                       line-height: 1.5;
+                       padding: 12px;
+                       white-space: pre-wrap;
+                       word-wrap: break-word;"></textarea>
+            </div>
+            <div class="form-group expediente-field" style="border-top: 1px solid #eee; padding-top: 15px; margin-top: 15px;">
+              <label style="display: flex; align-items: center; gap: 8px; font-weight: 600; color: #2c3e50;">
+                <input type="checkbox" id="expediente" style="width: 18px; height: 18px; cursor: pointer;">
+                <i class="fas fa-clipboard-list" style="color: #27ae60;"></i>
+                Paciente ingresado al expediente médico
+              </label>
+              <small style="display: block; margin-top: 5px; color: #7f8c8d; font-style: italic;">
+                Marcar cuando el paciente haya sido registrado en Argus
+              </small>
+            </div>
+            <button type="submit" class="btn-submit"><i class="fas fa-ticket-alt"></i> Agregar Consulta</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- Sección para visualizar tickets -->
+      <section id="verTicketsSection" class="hidden">
+        <h2><i class="fas fa-list"></i> Sala de Espera</h2>
+        
+        <!-- Barra de búsqueda (visible para todos menos visitas) -->
+        <div id="searchBarContainer" class="search-bar" style="display:none; margin-bottom: 15px;">
+          <input type="text" id="ticketSearchInput" placeholder="Buscar por cliente, mascota, ID paciente o factura..." autocomplete="off">
+          <i class="fas fa-search"></i>
+        </div>
+        
+        <!-- nuevo filtro de fecha -->
+        <div id="dateFilterContainer" class="date-filter hidden">
+          <label for="filterDate"><i class="fas fa-calendar-alt"></i> Seleccionar fecha:</label>
+          <input type="date" id="filterDate">
+        </div>
+
+        <div class="filter-container">
+          <button class="filter-btn active" data-filter="todos">Todos</button>
+          <button class="filter-btn" data-filter="espera">En Espera</button>
+          <button class="filter-btn" data-filter="consultorio">En Consultorio</button>
+          <button class="filter-btn" data-filter="terminado">Terminados</button>
+          <button class="filter-btn" data-filter="porFacturar">Por Facturar</button>
+        </div>
+        
+        <div id="ticketContainer" class="ticket-container"></div>
+      </section>
+      
+      <!-- Sección para crear tickets de laboratorio -->
+      <section id="crearLabSection" class="hidden">
+        <h2><i class="fas fa-vials"></i> Crear Ticket de Laboratorio</h2>
+        <div class="form-container">
+          <form id="labTicketForm">
+            <!-- Búsqueda de Cliente -->
+            <div class="form-row">
+              <div class="form-group" style="position: relative;">
+                <label for="labClienteSearch"><i class="fas fa-search"></i> Buscar Cliente</label>
+                <input type="text" id="labClienteSearch" placeholder="Escriba nombre, cédula o ID del paciente..." autocomplete="off">
+                <i class="fas fa-search search-icon"></i>
+                <div id="labClienteResults" class="cliente-search-results"></div>
+              </div>
+              <div class="form-group">
+                <label for="labFechaFiltro"><i class="fas fa-calendar-alt"></i> Filtrar por Fecha de Consulta</label>
+                <input type="date" id="labFechaFiltro" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="labNombre">Nombre del Cliente</label>
+                <input type="text" id="labNombre" required>
+              </div>
+              <div class="form-group">
+                <label for="labCedula">Cédula</label>
+                <input type="text" id="labCedula" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="labMascota">Nombre de la Mascota</label>
+                <input type="text" id="labMascota" required>
+              </div>
+              <div class="form-group">
+                <label for="labTipoMascota">Tipo de Mascota</label>
+                <select id="labTipoMascota" required>
+                  <option value="perro">Perro</option>
+                  <option value="gato">Gato</option>
+                  <option value="conejo">Conejo</option>
+                  <option value="otro">Otro</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Nueva fila para Edad, Raza, Peso y Sexo -->
+            <div class="form-row">
+              <div class="form-group">
+                <label for="labEdad">Edad</label>
+                <input type="text" id="labEdad" placeholder="Ej: 2 años, 6 meses">
+              </div>
+              <div class="form-group">
+                <label for="labRaza">Raza</label>
+                <select id="labRaza" required>
+                  <option value="">Seleccione primero el tipo de mascota</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="labPeso">Peso</label>
+                <input type="text" id="labPeso" placeholder="Ej: 5.2 kg, 3 libras" required>
+              </div>
+              <div class="form-group">
+                <label for="labSexo">Sexo</label>
+                <select id="labSexo" required>
+                  <option value="">Seleccionar</option>
+                  <option value="macho">Macho</option>
+                  <option value="hembra">Hembra</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="labIdPaciente">Número ID del paciente</label>
+                <input type="text" id="labIdPaciente" placeholder="ID del paciente" required>
+              </div>
+              <div class="form-group">
+                <label for="labFecha">Fecha de Servicio</label>
+                <input type="date" id="labFecha" required>
+              </div>
+            </div>
+
+            <!-- Sección de Servicios de Laboratorio -->
+            <div class="form-group full-width">
+              <label style="display: flex; align-items: center; gap: 8px; font-weight: 600; color: #2c3e50; margin-bottom: 15px;">
+                <i class="fas fa-vials"></i>
+                Servicios de Laboratorio a Realizar
+              </label>
+              
+              <!-- Filtro por categoría -->
+              <div class="services-filter" style="margin-bottom: 15px;">
+                <label for="categoryFilter" style="font-weight: normal; margin-right: 10px;">Filtrar por categoría:</label>
+                <select id="categoryFilter" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                  <option value="">Todos los servicios</option>
+                </select>
+              </div>
+
+              <!-- Buscador de servicios -->
+              <div class="services-search" style="position: relative; margin-bottom: 15px;">
+                <input type="text" id="servicesSearch" placeholder="Buscar servicios por nombre..." 
+                       style="width: 100%; padding: 10px 40px 10px 12px; border: 1px solid #ddd; border-radius: 4px;">
+                <i class="fas fa-search" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: #999;"></i>
+              </div>
+
+              <!-- Lista de servicios disponibles -->
+              <div class="services-container" style="max-height: 400px; overflow-y: auto; border: 1px solid #e0e0e0; border-radius: 8px; background: #f9f9f9;">
+                <div id="servicesList" class="services-list">
+                  <!-- Los servicios se cargarán aquí dinámicamente -->
+                </div>
+              </div>
+
+              <!-- Servicios seleccionados -->
+              <div class="selected-services" style="margin-top: 15px;">
+                <h4 style="margin-bottom: 10px; color: #2c3e50;">
+                  <i class="fas fa-check-circle" style="color: #42a5f5;"></i>
+                  Servicios Seleccionados
+                </h4>
+                <div id="selectedServicesList" class="selected-services-list" style="min-height: 60px; border: 1px solid #e0e0e0; border-radius: 4px; padding: 10px; background: white;">
+                  <p style="color: #999; text-align: center; margin: 20px 0;">No hay servicios seleccionados</p>
+                </div>
+                <div class="total-price" style="margin-top: 10px; text-align: right;">
+                  <span style="font-weight: bold; font-size: 1.1em; color: #2c3e50;">
+                    Total: <span id="totalPrice">₡0</span>
+                  </span>
+                </div>
+                <!-- Nota sobre precios -->
+                <div class="price-disclaimer" style="margin-top: 10px; padding: 8px 12px; background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 4px; font-size: 0.85em; color: #856404; text-align: center;">
+                  <i class="fas fa-exclamation-triangle" style="margin-right: 5px; color: #f39c12;"></i>
+                  <strong>Nota:</strong> Los precios de servicios pueden ser no exactos, consultar siempre en sistema.
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="labPrioridad">Prioridad</label>
+                <select id="labPrioridad" required>
+                  <option value="rutina">🟢 Normal</option>
+                  <option value="urgente">🟠 Urgente</option>
+                  <option value="emergencia">🔴 Emergencia</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <!-- Espacio para balance de layout -->
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="labMedicoSolicita"><i class="fas fa-user-md"></i> Médico que Solicita</label>
+                <select id="labMedicoSolicita" name="labMedicoSolicita" required>
+                  <option value="">Seleccione un médico</option>
+                  <option value="Dr. Luis Coto">Dr. Luis Coto</option>
+                  <option value="Dr. Randall Azofeifa">Dr. Randall Azofeifa</option>
+                  <option value="Dr. Gustavo Gonzalez">Dr. Gustavo Gonzalez</option>
+                  <option value="Dra. Daniela Sancho">Dra. Daniela Sancho</option>
+                  <option value="Dra. Francinny Nuñez">Dra. Francinny Nuñez</option>
+                  <option value="Dra. Kharen Moreno">Dra. Kharen Moreno</option>
+                  <option value="Dra. Karina Madrigal">Dra. Karina Madrigal</option>
+                  <option value="Dra. Lourdes Chacón">Dra. Lourdes Chacón</option>
+                  <option value="Dra. Sofia Carrillo">Dra. Sofia Carrillo</option>
+                  <option value="Dra. Karla Quesada">Dra. Karla Quesada</option>
+                  <option value="Dra. Natalia Alvarado">Dra. Natalia Alvarado</option>
+                  <option value="Medico Externo">Médico Externo</option>
+                  <option value="Medico Internista">Médico Internista</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="labExamenRegalia" style="display: flex; align-items: center; gap: 8px;">
+                  Examen de Regalía
+                </label>
+                <select id="labExamenRegalia" required>
+                  <option value="no">No</option>
+                  <option value="si">Sí</option>
+                </select>
+                <small style="color: #7f8c8d; font-style: italic; display: block; margin-top: 5px;">
+                  Firme aquí si es necesario realizar un examen de regalía.
+                </small>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="labObservaciones">Observaciones</label>
+                <textarea id="labObservaciones" placeholder="Observaciones adicionales, síntomas, etc." rows="3"></textarea>
+              </div>
+            </div>
+
+            <!-- Nueva fila para notas de laboratorio y paquete -->
+            <div class="form-row">
+              <div class="form-group">
+                <label for="labNotasLaboratorio">Notas de Laboratorio</label>
+                <textarea id="labNotasLaboratorio" placeholder="Notas específicas del laboratorio, instrucciones, resultados preliminares..." rows="3"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="labPaquete">Tipo de Paquete</label>
+                <select id="labPaquete" required>
+                  <option value="no_aplica">No Aplica</option>
+                  <option value="castracion">Paquete de Castración</option>
+                  <option value="limpieza">Paquete de Limpieza</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="labEstado">Estado del Ticket</label>
+                <select id="labEstado" required>
+                  <option value="pendiente">Pendiente</option>
+                  <option value="procesando">En proceso</option>
+                  <option value="reportado">Reportado Lab</option>
+                  <option value="reportado_cliente">Reportado al Cliente</option>
+                  <option value="laboratorio_externo">Laboratorio Externo</option>
+                  <option value="cliente_no_contesta">Cliente no contesta</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="labCorreo">Correo Electrónico</label>
+                <input type="text" id="labCorreo" placeholder="Ejemplo: correo@ejemplo.com o cualquier texto" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="labTelefono">Teléfono de Contacto</label>
+                <input type="tel" id="labTelefono" placeholder="Número de teléfono" required>
+              </div>
+              <div class="form-group">
+                <label for="labFactura">Número de Factura</label>
+                <input type="text" id="labFactura" placeholder="Número de factura">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="labDepartamento">Departamento que Solicita</label>
+                <select id="labDepartamento" required>
+                  <option value="consulta_externa">Consulta Externa</option>
+                  <option value="internos">Internos</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <!-- Empty group for layout balance -->
+              </div>
+            </div>
+
+            <button type="submit" class="btn-submit"><i class="fas fa-vials"></i> Crear Ticket de Laboratorio</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- Sección para visualizar tickets de laboratorio -->
+      <section id="verLabSection" class="hidden">
+        <h2><i class="fas fa-microscope"></i> Tickets de Laboratorio</h2>
+        
+        <!-- Barra de búsqueda para laboratorio -->
+        <div class="search-bar" style="margin-bottom: 15px;">
+          <input type="text" id="labSearchInput" placeholder="Buscar por cliente, mascota, ID paciente o tipo de examen..." autocomplete="off">
+          <i class="fas fa-search"></i>
+        </div>
+        
+        <!-- Filtro de fecha para laboratorio -->
+        <div class="date-filter" style="margin-bottom: 15px;" id="labDateFilterContainer">
+          <label for="labFilterDate"><i class="fas fa-calendar-alt"></i> Seleccionar fecha:</label>
+          <input type="date" id="labFilterDate">
+        </div>
+
+        <!-- Filtro por médico para laboratorio -->
+        <div class="medico-filter" style="margin-bottom: 15px; display: none;" id="labMedicoFilterContainer">
+          <label for="labMedicoFilter"><i class="fas fa-user-md"></i> Filtrar por médico:</label>
+          <select id="labMedicoFilter" style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; min-width: 200px;">
+            <option value="">Todos los médicos</option>
+            <option value="Dr. Luis Coto">Dr. Luis Coto</option>
+            <option value="Dr. Randall Azofeifa">Dr. Randall Azofeifa</option>
+            <option value="Dr. Gustavo Gonzalez">Dr. Gustavo Gonzalez</option>
+            <option value="Dra. Daniela Sancho">Dra. Daniela Sancho</option>
+            <option value="Dra. Francinny Nuñez">Dra. Francinny Nuñez</option>
+            <option value="Dra. Kharen Moreno">Dra. Kharen Moreno</option>
+            <option value="Dra. Karina Madrigal">Dra. Karina Madrigal</option>
+            <option value="Dra. Lourdes Chacón">Dra. Lourdes Chacón</option>
+            <option value="Dra. Sofia Carrillo">Dra. Sofia Carrillo</option>
+            <option value="Dra. Karla Quesada">Dra. Karla Quesada</option>
+            <option value="Dra. Natalia Alvarado">Dra. Natalia Alvarado</option>
+            <option value="Medico Externo">Médico Externo</option>
+            <option value="Medico Internista">Médico Internista</option>
+          </select>
+        </div>
+
+        <!-- Filtros para laboratorio -->
+        <div class="filter-container">
+          <button class="lab-filter-btn active" data-filter="todos">Todos</button>
+          <button class="lab-filter-btn" data-filter="pendiente">Pendiente</button>
+          <button class="lab-filter-btn" data-filter="procesando">En Proceso</button>
+          <button class="lab-filter-btn" data-filter="laboratorio_externo">Laboratorio Externo</button>
+          <button class="lab-filter-btn" data-filter="reportado">Reportados Lab</button>
+          <button class="lab-filter-btn" data-filter="reportado_cliente">Por reportar al cliente <br> consulta externa/internos</button>
+          <button class="lab-filter-btn" data-filter="internos">Internos</button>
+          <button class="lab-filter-btn" data-filter="cliente_no_contesta">Cliente no contesta</button>
+        </div>
+        
+        <!-- Contenedor de tickets de laboratorio -->
+        <div id="labTicketContainer" class="ticket-container">
+          <!-- Aquí se mostrarán los tickets de laboratorio -->
+        </div>
+
+        <!-- Estadísticas rápidas de laboratorio -->
+        <div class="lab-stats" style="margin-top: 20px;">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <i class="fas fa-vials"></i>
+              <div class="stat-info">
+                <span class="stat-number" id="totalLabTickets">0</span>
+                <span class="stat-label">Total Tickets</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <i class="fas fa-clock"></i>
+              <div class="stat-info">
+                <span class="stat-number" id="pendientesLab">0</span>
+                <span class="stat-label">Pendientes</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <i class="fas fa-microscope"></i>
+              <div class="stat-info">
+                <span class="stat-number" id="procesandoLab">0</span>
+                <span class="stat-label">En Proceso</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <i class="fas fa-flask"></i>
+              <div class="stat-info">
+                <span class="stat-number" id="reportadosLab">0</span>
+                <span class="stat-label">Reportados Lab</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <i class="fas fa-paper-plane"></i>
+              <div class="stat-info">
+                <span class="stat-number" id="reportadosClienteLab">0</span>
+                <span class="stat-label">Por reportar al cliente</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <i class="fas fa-external-link-alt"></i>
+              <div class="stat-info">
+                <span class="stat-number" id="laboratorioExternoLab">0</span>
+                <span class="stat-label">Laboratorio Externo</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <i class="fas fa-phone-slash"></i>
+              <div class="stat-info">
+                <span class="stat-number" id="clienteNoContestaLab">0</span>
+                <span class="stat-label">Cliente no contesta</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <i class="fas fa-home"></i>
+              <div class="stat-info">
+                <span class="stat-number" id="internosLab">0</span>
+                <span class="stat-label">Internos</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Sección de estadísticas -->
+      <section id="estadisticasSection" class="hidden">
+        <h2><i class="fas fa-chart-bar"></i> Estadísticas</h2>
+        <!-- Filtro global de periodo y fechas para estadísticas -->
+        <div class="filtros-estadisticas-global" style="margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end;">
+          <div class="filtro-grupo">
+            <label for="filtroPeriodoGlobal">Período:</label>
+            <select id="filtroPeriodoGlobal">
+              <option value="hoy">Hoy</option>
+              <option value="semana">Esta semana</option>
+              <option value="mes">Este mes</option>
+              <option value="ano">Este año</option>
+              <option value="personalizado">Personalizado</option>
+            </select>
+          </div>
+          <div id="periodPersonalizadoGlobal" class="filtro-periodo-personalizado" style="display: none; gap: 8px;">
+            <div class="filtro-fecha">
+              <label for="fechaInicioEstadisticasGlobal">Desde:</label>
+              <input type="date" id="fechaInicioEstadisticasGlobal">
+            </div>
+            <div class="filtro-fecha">
+              <label for="fechaFinEstadisticasGlobal">Hasta:</label>
+              <input type="date" id="fechaFinEstadisticasGlobal">
+            </div>
+          </div>
+          <button id="aplicarFiltrosEstadisticasBtn" class="btn-filtrar" style="margin-left: 8px;">
+            <i class="fas fa-filter"></i> Aplicar filtros
+          </button>
+        </div>
+        <div class="stats-container">
+          <div class="stat-card">
+            <i class="fas fa-users"></i>
+            <h3>Total Pacientes</h3>
+            <p id="totalPacientes">0</p>
+          </div>
+          <div class="stat-card">
+            <i class="fas fa-hourglass-half"></i>
+            <h3>En Espera</h3>
+            <p id="pacientesEspera">0</p>
+          </div>
+          <div class="stat-card">
+            <i class="fas fa-stethoscope"></i>
+            <h3>En Consulta</h3>
+            <p id="pacientesConsulta">0</p>
+          </div>
+          <div class="stat-card">
+            <i class="fas fa-check-circle"></i>
+            <h3>Atendidos</h3>
+            <p id="pacientesAtendidos">0</p>
+          </div>
+          <div class="stat-card">
+            <i class="fas fa-user-slash"></i>
+            <h3>Clientes que se fueron</h3>
+            <p id="clientesSeFueron">0</p>
+          </div>
+        </div>
+    
+
+        <!-- Nuevo: Sección de tiempo promedio de espera por servicio -->
+        <section class="wait-time-statistics">
+          <h3><i class="fas fa-hourglass-half"></i> Tiempo Promedio de Espera por Servicio</h3>
+          <div class="wait-time-chart">
+            <canvas id="waitTimeChart"></canvas>
+          </div>
+          <div class="wait-time-table">
+            <table class="stats-table">
+              <thead>
+                <tr>
+                  <th>Servicio</th>
+                  <th>Tiempo Promedio</th>
+                  <th>Cantidad</th>
+                </tr>
+              </thead>
+              <tbody id="waitTimeStatsBody">
+                <!-- Se llenará dinámicamente -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <div class="estadisticas-personal-section">
+          <h3><i class="fas fa-user-md"></i> Estadísticas por Personal y Servicio</h3>
+          
+          <div class="estadisticas-resultados">
+            <div class="charts-container">
+              <div class="chart-wrapper">
+                <h4>Servicios por Personal</h4>
+                <canvas id="chartServiciosPersonal"></canvas>
+              </div>
+              <div class="chart-wrapper">
+                <h4>Distribución de Servicios</h4>
+                <canvas id="chartDistribucionServicios"></canvas>
+              </div>
+            </div>
+            
+            <div class="tabla-estadisticas">
+              <h4>Detalles por Personal</h4>
+              <table id="tablaEstadisticasPersonal" class="stats-table">
+                <thead>
+                  <tr>
+                    <th>Personal</th>
+                    <th>Tipo de Servicio</th>
+                    <th>Cantidad</th>
+                    <th>% del Total</th>
+                  </tr>
+                </thead>
+                <tbody id="tablaEstadisticasBody">
+                  <!-- Se llenará dinámicamente -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sección de ediciones (solo admin) -->
+      <section id="edicionesSection" class="hidden">
+        <h2><i class="fas fa-history"></i> Historial de Ediciones</h2>
+        
+        <!-- Agregar controles de filtro -->
+        <div class="filtros-ediciones" style="margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end;">
+          <div class="filtro-grupo">
+            <label for="filtroPeriodoEdiciones">Período:</label>
+            <select id="filtroPeriodoEdiciones">
+              <option value="hoy">Hoy</option>
+              <option value="semana">Esta semana</option>
+              <option value="mes">Este mes</option>
+              <option value="ano">Este año</option>
+              <option value="personalizado">Personalizado</option>
+              <option value="todo">Todo</option>
+            </select>
+          </div>
+          <div id="periodPersonalizadoEdiciones" class="filtro-periodo-personalizado" style="display: none; gap: 8px;">
+            <div class="filtro-fecha">
+              <label for="fechaInicioEdiciones">Desde:</label>
+              <input type="date" id="fechaInicioEdiciones">
+            </div>
+            <div class="filtro-fecha">
+              <label for="fechaFinEdiciones">Hasta:</label>
+              <input type="date" id="fechaFinEdiciones">
+            </div>
+          </div>
+          <button id="aplicarFiltrosEdicionesBtn" class="btn-filtrar" style="margin-left: 8px;">
+            <i class="fas fa-filter"></i> Aplicar filtros
+          </button>
+        </div>
+
+        <!-- Agregar barra de búsqueda -->
+        <div class="search-bar" style="margin-bottom: 20px;">
+          <input type="text" id="searchEdiciones" placeholder="Buscar por nombre de mascota, ID, factura, nombre del dueño..." style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ddd;">
+          <i class="fas fa-search" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #666;"></i>
+        </div>
+
+        <div class="ediciones-container">
+          <table class="stats-table">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Usuario</th>
+                <th>Email</th>
+                <th>ID Ticket</th>
+                <th>Cliente</th>
+                <th>Mascota</th>
+                <th>Factura</th>
+                <th>Cambios Realizados</th>
+              </tr>
+            </thead>
+            <tbody id="edicionesTableBody">
+              <!-- Se llenará dinámicamente -->
+            </tbody>
+          </table>
+
+          <!-- Controles de paginación -->
+          <div class="paginacion-container" style="margin-top: 20px; display: flex; justify-content: center; align-items: center; gap: 10px;">
+            <button id="prevPage" class="btn-pagina" disabled>
+              <i class="fas fa-chevron-left"></i> Anterior
+            </button>
+            <div id="numeroPaginas" style="display: flex; gap: 5px;">
+              <!-- Se llenará dinámicamente -->
+            </div>
+            <button id="nextPage" class="btn-pagina">
+              Siguiente <i class="fas fa-chevron-right"></i>
+            </button>
+            <div class="info-paginas" style="margin-left: 15px;">
+              <span>Mostrando página <span id="paginaActual">1</span> de <span id="totalPaginas">1</span></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sección de horario -->
+      <section id="horarioSection" class="hidden">
+        <h2><i class="fas fa-calendar-alt"></i> Horario de Consultas</h2>
+        
+        <div class="date-controls">
+          <input type="date" id="fechaHorario" value="">
+          <button id="verHorarioBtn"><i class="fas fa-search"></i> Ver horario</button>
+        </div>
+        
+        <div class="export-controls">
+          <button id="exportarDiaBtn"><i class="fas fa-file-export"></i> Exportar día</button>
+          <button id="exportarMesBtn"><i class="fas fa-file-export"></i> Exportar mes</button>
+          <button id="exportarGoogleBtn"><i class="fab fa-google"></i> Exportar a Google Sheets</button>
+        </div>
+        
+        <div class="horario-container">
+          <table id="tablaHorario" class="horario-table">
+            <thead>
+              <tr>
+                <th>Hora</th>
+                <th>Cliente</th>
+                <th>Mascota</th>
+                <th>Tipo</th>
+                <th>Estado</th>
+                <th>Urgencia</th>
+                <th>Médico</th>
+                <th>ID Paciente</th>
+                <th>Factura</th>
+                <th>Hora de Atención</th>
+                <th>Por Cobrar</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="horarioBody">
+              <!-- Aquí se generarán las filas dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="backup-controls">
+          <button id="backupBtn"><i class="fas fa-download"></i> Generar respaldo</button>
+          <button id="cleanDataBtn"><i class="fas fa-broom"></i> Limpiar datos antiguos</button>
+        </div>
+      </section>
+
+      <!-- Sección de Consentimientos -->
+      <section id="consentimientosSection" class="hidden">
+        <h2><i class="fas fa-file-contract"></i> Formularios de Consentimiento</h2>
+        
+        <!-- Buscador de clientes -->
+        <div class="client-search-section">
+          <h3><i class="fas fa-search"></i> Buscar Cliente</h3>
+          <div class="search-container">
+            <div class="search-input-container">
+              <input type="text" id="consentClientSearch" placeholder="Buscar por nombre, cédula o nombre de mascota..." class="search-input">
+              <button id="searchClientBtn" class="search-btn">
+                <i class="fas fa-search"></i> Buscar
+              </button>
+            </div>
+            <div id="clientSearchResults" class="search-results"></div>
+          </div>
+        </div>
+
+        <!-- Selector de plantilla de consentimiento -->
+        <div class="consent-template-section">
+          <h3><i class="fas fa-file-medical"></i> Seleccionar Plantilla de Consentimiento</h3>
+          <div class="template-grid">
+            <div class="template-card" data-template="anestesia">
+              <h4>Autorización para Anestesia</h4>
+              <p>Consentimiento para procedimientos bajo anestesia</p>
+            </div>
+            <div class="template-card" data-template="cirugia">
+              <h4>Consentimiento Cirugía</h4>
+              <p>Autorización para procedimientos quirúrgicos</p>
+            </div>
+            <div class="template-card" data-template="emergencias">
+              <h4>Emergencias</h4>
+              <p>Consentimiento para atención de emergencias</p>
+            </div>
+            <div class="template-card" data-template="internamiento">
+              <h4>Internamiento</h4>
+              <p>Autorización para internamiento hospitalario</p>
+            </div>
+            <div class="template-card" data-template="transfusion">
+              <h4>Transfusión</h4>
+              <p>Consentimiento para transfusión sanguínea</p>
+            </div>
+            <div class="template-card" data-template="cesarea">
+              <h4>Consentimiento Cesárea</h4>
+              <p>Autorización para cesárea</p>
+            </div>
+            <div class="template-card" data-template="eutanasia">
+              <h4>Consentimiento Eutanasia</h4>
+              <p>Autorización para eutanasia humanitaria</p>
+            </div>
+            <div class="template-card" data-template="alta_voluntaria">
+              <h4>Alta Voluntaria</h4>
+              <p>Consentimiento informado por alta voluntaria</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Iframe para mostrar el formulario seleccionado -->
+        <div id="consentFormContainer" class="consent-form-container" style="display:none;">
+          <div class="form-header">
+            <h3 id="selectedFormTitle">Formulario Seleccionado</h3>
+            <button id="closeFormBtn" class="close-btn">
+              <i class="fas fa-times"></i> Cerrar
+            </button>
+          </div>
+          <iframe id="consentFormIframe" src="" frameborder="0"></iframe>
+        </div>
+      </section>
+
+  <!-- Plantillas para notificaciones y modales -->
+  <div id="notificationContainer"></div>
+  
+  <!-- Modales -->
+  <div id="editModal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h3>Editar Consulta</h3>
+      <form id="editForm">
+        <!-- El contenido del formulario se generará dinámicamente -->
+      </form>
+    </div>
+  </div>
+  
+  <div id="statusModal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h3>Cambiar Estado</h3>
+      <div id="statusOptions">
+        <!-- Opciones de estado generadas dinámicamente -->
+      </div>
+      <div class="modal-actions">
+        <button id="cancelStatusBtn">Cancelar</button>
+        <button id="saveStatusBtn">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="adminModal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h3><i class="fas fa-shield-alt"></i> Panel de Administración</h3>
+      <div id="adminContent">
+        <!-- Content will be loaded dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de administración de usuarios -->
+<div id="adminUsersModal" class="edit-modal" style="display:none;z-index:2000;">
+  <div class="modal-content animate-scale" style="max-width:420px;">
+    <span class="close-modal" id="closeAdminUsersModal" style="float:right;cursor:pointer;font-size:1.5rem;">&times;</span>
+    <h3><i class="fas fa-users-cog"></i> Administración de Usuarios</h3>
+    <form id="createUserForm">
+      <div class="form-group">
+        <label for="newUserEmail">Correo electrónico</label>
+        <input type="email" id="newUserEmail" required>
+      </div>
+      <div class="form-group">
+        <label for="newUserName">Nombre</label>
+        <input type="text" id="newUserName" required>
+      </div>
+      <div class="form-group">
+        <label for="newUserRole">Rol</label>
+        <select id="newUserRole" required>
+          <option value="recepcion">Recepción</option>
+          <option value="consulta_externa">Consulta Externa</option>
+          <option value="quirofano">Quirofano</option>
+          <option value="internos">Internos</option>
+          <option value="visitas">Visitas</option>
+        </select>
+      </div>
+      <button type="submit" class="btn-save" style="width:100%;margin-bottom:10px;">Crear usuario</button>
+    </form>
+  </div>
+</div>
+
+  <!-- External scripts - keep these external references -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <script src="firebase-config.js"></script>
+  <script src="services-data.js"></script>
+  <script src="auth.js"></script>
+  <script src="laboratorio.js"></script>
+  <script src="consentimientos-module.js"></script>
+  <script src="debug-consentimientos.js"></script>
+  <script src="index.js"></script>
+  <script src="fix-wait-time.js"></script>
+  <script src="admin-users.js"></script>
+  <script src="debug-lab-search.js"></script>
+  <script src="fix-lab-search.js"></script>
+  <script src="test-lab-functionality.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tipoMascota = document.getElementById('tipoMascota');
+  const conejoImg = document.getElementById('conejoImg');
+  if (tipoMascota && conejoImg) {
+    tipoMascota.addEventListener('change', function() {
+      conejoImg.style.display = tipoMascota.value === 'conejo' ? 'inline-block' : 'none';
+    });
+  }
+
+  // Ocultar campo Hora de Cita según el rol
+  const userRole = sessionStorage.getItem('userRole');
+  const horaCitaGroup = document.querySelector('input#hora')?.closest('.form-group');
+  if (horaCitaGroup) {
+    if (!["admin", "recepción", "quirofano"].includes(userRole)) {
+      horaCitaGroup.style.display = 'none';
+    } else {
+      horaCitaGroup.style.display = '';
+    }
+  }
+
+  // Descripciones para cada categorización
+  const urgenciaDescriptions = {
+    emergencia: 'Emergencias. Situaciones críticas que requieren atención médica inmediata. Se mostrará como EMERGENCIA en el ticket.',
+    urgencia: 'Urgencias. Problemas de salud que deben atenderse pronto, pero no son críticos.',
+    leve: 'Leve. Puede esperar, sin riesgo inmediato.',
+    consulta: 'Consulta. Atención general o rutinaria.'
+  };
+
+  function updateUrgenciaDescription(selectId, descId) {
+    const select = document.getElementById(selectId);
+    const desc = document.getElementById(descId);
+    if (!select || !desc) return;
+    const value = select.value;
+    desc.textContent = urgenciaDescriptions[value] || '';
+  }
+
+  // Descripción dinámica en creación
+  const urgenciaSelect = document.getElementById('urgencia');
+  if (urgenciaSelect) {
+    const descDiv = document.createElement('div');
+    descDiv.id = 'urgenciaDesc';
+    descDiv.style.fontSize = '0.95em';
+    descDiv.style.color = '#1976d2';
+    descDiv.style.marginTop = '4px';
+    urgenciaSelect.parentNode.appendChild(descDiv);
+    urgenciaSelect.addEventListener('change', function() {
+      updateUrgenciaDescription('urgencia', 'urgenciaDesc');
+    });
+    updateUrgenciaDescription('urgencia', 'urgenciaDesc');
+  }
+});
+
+// Navegación with flechas en el formulario de tickets
+(function() {
+  const form = document.getElementById('ticketForm');
+  if (!form) return;
+  // Selecciona todos los inputs, selects y textareas visibles en orden
+  const getFields = () => Array.from(form.querySelectorAll('input, select, textarea')).filter(el => el.offsetParent !== null && !el.disabled);
+
+  form.addEventListener('keydown', function(e) {
+    const fields = getFields();
+    const idx = fields.indexOf(document.activeElement);
+    if (idx === -1) return;
+    // Columnas por fila (ajustar si cambias el diseño)
+    const cols = 2;
+    // Flecha abajo
+    if (e.key === 'ArrowDown') {
+      if (idx + cols < fields.length) {
+        fields[idx + cols].focus();
+        e.preventDefault();
+      }
+    }
+    // Flecha arriba
+    else if (e.key === 'ArrowUp') {
+      if (idx - cols >= 0) {
+        fields[idx - cols].focus();
+        e.preventDefault();
+      }
+    }
+    // Flecha derecha
+    else if (e.key === 'ArrowRight') {
+      if ((idx + 1) % cols !== 0 && idx + 1 < fields.length) {
+        fields[idx + 1].focus();
+        e.preventDefault();
+      }
+    }
+    // Flecha izquierda
+    else if (e.key === 'ArrowLeft') {
+      if (idx % cols !== 0 && idx - 1 >= 0) {
+        fields[idx - 1].focus();
+        e.preventDefault();
+      }
+    }
+  });
+})();
+</script>
+</body>
+</html>
