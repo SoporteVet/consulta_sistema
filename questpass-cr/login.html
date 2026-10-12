@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Acceso administrativo QuestPass CR (maqueta Avance 1).">
+  <title>Acceso administrativo | QuestPass CR</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <a class="skip-link" href="#contenido-principal">Saltar al contenido</a>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html">QuestPass <span>CR</span></a>
+      <nav class="site-nav" aria-label="Principal">
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="experiencias.html">Experiencias</a></li>
+          <li><a href="reservar.html">Reservar</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+          <li><a href="login.html" aria-current="page">Acceso admin</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenido-principal" class="login-wrap">
+    <section class="form-panel" aria-labelledby="titulo-login">
+      <h1 id="titulo-login">Acceso administrativo</h1>
+      <p class="lead">Maqueta del formulario de inicio de sesión. En el Avance 2 se validarán credenciales; por ahora solo se muestra la estructura correcta.</p>
+
+      <form action="#" method="get">
+        <div class="form-group">
+          <label for="correo-admin">Correo electrónico</label>
+          <input type="email" id="correo-admin" name="correo" required autocomplete="username">
+        </div>
+
+        <div class="form-group">
+          <label for="contrasena">Contraseña</label>
+          <input type="password" id="contrasena" name="contrasena" required autocomplete="current-password">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+      </form>
+
+      <p style="margin-top: 1.25rem;">
+        <a href="admin.html">Ir al panel (vista previa sin autenticación)</a>
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p>© 2026 QuestPass CR.</p>
+      <p><a href="index.html">Sitio público</a></p>
+    </div>
+  </footer>
+</body>
+</html>

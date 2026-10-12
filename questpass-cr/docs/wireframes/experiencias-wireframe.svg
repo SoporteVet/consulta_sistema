@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1100" role="img" aria-label="Wireframe experiencias.html">
+  <title>Wireframe  experiencias.html</title>
+  <rect width="800" height="1100" fill="#f5f5f5"/>
+  <rect x="40" y="30" width="720" height="60" fill="#fff" stroke="#333" stroke-width="2"/>
+  <text x="60" y="65" font-family="sans-serif" font-size="16">Header navegación</text>
+  <text x="60" y="120" font-family="sans-serif" font-size="22" font-weight="bold">H1 Catálogo</text>
+  <rect x="40" y="150" width="360" height="180" fill="#fff" stroke="#333"/>
+  <rect x="420" y="150" width="360" height="180" fill="#fff" stroke="#333"/>
+  <rect x="40" y="350" width="360" height="180" fill="#fff" stroke="#333"/>
+  <rect x="420" y="350" width="360" height="180" fill="#fff" stroke="#333"/>
+  <rect x="40" y="550" width="360" height="180" fill="#fff" stroke="#333"/>
+  <rect x="420" y="550" width="360" height="180" fill="#fff" stroke="#333"/>
+  <text x="60" y="760" font-family="sans-serif" font-size="16">Grid 6 cards QST-001 & QST-006</text>
+  <rect x="40" y="1020" width="720" height="50" fill="#1a3d32" stroke="#333"/>
+</svg>

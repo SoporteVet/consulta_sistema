@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Panel administrativo QuestPass CR — maqueta Avance 1.">
+  <title>Panel administrativo | QuestPass CR</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <a class="skip-link" href="#contenido-principal">Saltar al contenido</a>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html">QuestPass <span>CR</span></a>
+      <nav class="site-nav" aria-label="Principal">
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="experiencias.html">Experiencias</a></li>
+          <li><a href="reservar.html">Reservar</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+          <li><a href="login.html">Acceso admin</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenido-principal">
+    <div class="admin-header-bar">
+      <h1>Panel administrativo</h1>
+      <p><a href="login.html">Cerrar sesión</a> (enlace estático — Avance 1)</p>
+    </div>
+
+    <div class="admin-layout">
+      <section class="admin-section" aria-labelledby="sec-experiencias">
+        <h2 id="sec-experiencias">Experiencias</h2>
+        <p class="lead">Registros oficiales del catálogo (solo lectura en esta fase).</p>
+        <div class="table-scroll">
+          <table class="data-table">
+            <caption class="empty-message" style="caption-side: top; font-style: normal; text-align: left; padding: 0 0 0.75rem;">Catálogo QuestPass CR</caption>
+            <thead>
+              <tr>
+                <th scope="col">Código</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Ubicación</th>
+                <th scope="col">Duración</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Categoría</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>QST-001</td>
+                <td>Amanecer en Volcán Poás</td>
+                <td>Parque Nacional Volcán Poás, Alajuela</td>
+                <td>4 horas</td>
+                <td>₡28 500</td>
+                <td>Naturaleza</td>
+              </tr>
+              <tr>
+                <td>QST-002</td>
+                <td>Canopy Monteverde</td>
+                <td>Reserva Bosque Nuboso, Monteverde</td>
+                <td>3 horas</td>
+                <td>₡35 000</td>
+                <td>Aventura</td>
+              </tr>
+              <tr>
+                <td>QST-003</td>
+                <td>Tour café y chocolate Sarapiquí</td>
+                <td>Finca La Selva, Sarapiquí</td>
+                <td>2 h 30 min</td>
+                <td>₡22 000</td>
+                <td>Gastronomía</td>
+              </tr>
+              <tr>
+                <td>QST-004</td>
+                <td>Snorkel bahía Ballena</td>
+                <td>Parque Marino Ballena, Uvita</td>
+                <td>5 horas</td>
+                <td>₡42 000</td>
+                <td>Marino</td>
+              </tr>
+              <tr>
+                <td>QST-005</td>
+                <td>Rafting río Pacuare</td>
+                <td>Pacuare, Turrialba</td>
+                <td>6 horas</td>
+                <td>₡58 000</td>
+                <td>Aventura extrema</td>
+              </tr>
+              <tr>
+                <td>QST-006</td>
+                <td>Caminata histórica San José</td>
+                <td>Barrio Amón y Teatro Nacional</td>
+                <td>2 horas</td>
+                <td>₡15 000</td>
+                <td>Cultura</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="admin-section" aria-labelledby="sec-reservas">
+        <h2 id="sec-reservas">Reservas</h2>
+        <div class="table-scroll">
+          <table class="data-table">
+            <caption class="empty-message" style="caption-side: top; font-style: normal; text-align: left; padding: 0 0 0.75rem;">Listado de reservas</caption>
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Cliente</th>
+                <th scope="col">Experiencia</th>
+                <th scope="col">Entradas</th>
+                <th scope="col">Fecha</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="5" class="empty-message">Aún no hay reservas registradas</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p>© 2026 QuestPass CR — Panel (maqueta).</p>
+      <p><a href="experiencias.html">Ver sitio público</a></p>
+    </div>
+  </footer>
+</body>
+</html>

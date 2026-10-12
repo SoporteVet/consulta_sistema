@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 950" role="img" aria-label="Wireframe admin.html">
+  <title>Wireframe  admin.html</title>
+  <rect width="800" height="950" fill="#f5f5f5"/>
+  <rect x="40" y="30" width="720" height="60" fill="#fff" stroke="#333" stroke-width="2"/>
+  <text x="60" y="120" font-family="sans-serif" font-size="22" font-weight="bold">H1 Panel admin</text>
+  <text x="60" y="160" font-family="sans-serif" font-size="18" font-weight="bold">Sección Experiencias</text>
+  <rect x="40" y="180" width="720" height="280" fill="#fff" stroke="#333"/>
+  <text x="60" y="210" font-family="sans-serif" font-size="14">Tabla 6 filas oficiales</text>
+  <text x="60" y="490" font-family="sans-serif" font-size="18" font-weight="bold">Sección Reservas</text>
+  <rect x="40" y="510" width="720" height="120" fill="#fff" stroke="#333"/>
+  <text x="60" y="570" font-family="sans-serif" font-size="14">Tabla vacía  mensaje sin reservas</text>
+</svg>

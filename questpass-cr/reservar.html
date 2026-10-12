@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Reserva tu experiencia QuestPass CR.">
+  <title>Reservar | QuestPass CR</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <a class="skip-link" href="#contenido-principal">Saltar al contenido</a>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html">QuestPass <span>CR</span></a>
+      <nav class="site-nav" aria-label="Principal">
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="experiencias.html">Experiencias</a></li>
+          <li><a href="reservar.html" aria-current="page">Reservar</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+          <li><a href="login.html">Acceso admin</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenido-principal">
+    <h1>Reservar experiencia</h1>
+    <p class="lead">Completa el formulario. Los campos marcados son obligatorios. La validación se realiza con atributos HTML del navegador (sin JavaScript en este avance).</p>
+
+    <form class="form-panel" action="#" method="get">
+      <div class="form-group">
+        <label for="nombre-completo">Nombre completo</label>
+        <input type="text" id="nombre-completo" name="nombre_completo" required minlength="3" maxlength="60" autocomplete="name">
+      </div>
+
+      <div class="form-group">
+        <label for="correo">Correo electrónico</label>
+        <input type="email" id="correo" name="correo" required autocomplete="email">
+      </div>
+
+      <div class="form-group">
+        <label for="telefono">Teléfono</label>
+        <input type="tel" id="telefono" name="telefono" required maxlength="9" pattern="[0-9]{8}|[0-9]{4}-[0-9]{4}" inputmode="numeric" autocomplete="tel">
+        <p class="form-hint">Formato permitido: 88888888 o 8888-8888</p>
+      </div>
+
+      <div class="form-group">
+        <label for="experiencia">Experiencia</label>
+        <select id="experiencia" name="experiencia" required>
+          <option value="">Seleccione una experiencia</option>
+          <option value="QST-001">QST-001 — Amanecer en Volcán Poás</option>
+          <option value="QST-002">QST-002 — Canopy Monteverde</option>
+          <option value="QST-003">QST-003 — Tour café y chocolate Sarapiquí</option>
+          <option value="QST-004">QST-004 — Snorkel bahía Ballena</option>
+          <option value="QST-005">QST-005 — Rafting río Pacuare</option>
+          <option value="QST-006">QST-006 — Caminata histórica San José</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="cantidad">Cantidad de entradas</label>
+        <input type="number" id="cantidad" name="cantidad" required min="1" max="4" value="1">
+        <p class="form-hint">Mínimo 1, máximo 4 entradas por solicitud.</p>
+      </div>
+
+      <div class="form-group">
+        <div class="checkbox-group">
+          <input type="checkbox" id="condiciones" name="condiciones" value="aceptado" required>
+          <label for="condiciones">Acepto las condiciones de reserva y el tratamiento de mis datos para gestionar la solicitud.</label>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Enviar solicitud de reserva</button>
+    </form>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p>© 2026 QuestPass CR.</p>
+      <p><a href="experiencias.html">Ver catálogo</a></p>
+    </div>
+  </footer>
+</body>
+</html>
